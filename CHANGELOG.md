@@ -12,6 +12,11 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
+## [0.0.4] - 2025-06-21
+
+### Added
+- Extension icon for better visibility in VS Code Marketplace
+
 ## [0.0.3] - 2025-06-21
 
 ### Changed

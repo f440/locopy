@@ -2,13 +2,14 @@
   "name": "locopy",
   "displayName": "Locopy",
   "description": "Your handy tool for copying code locations with line numbers",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "f440",
   "repository": {
     "type": "git",
     "url": "https://github.com/f440/locopy.git"
   },
   "license": "MIT",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.96.2"
   },
