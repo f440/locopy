@@ -12,6 +12,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
+## [0.0.5] - 2025-06-21
+
+### Changed
+- Reordered default formats to prioritize relative path (more common use case)
+- Relative path with line number is now the first/default format
+- Absolute path with line number is now the second format
+
 ## [0.0.4] - 2025-06-21
 
 ### Added

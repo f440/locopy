@@ -2,7 +2,7 @@
   "name": "locopy",
   "displayName": "Locopy",
   "description": "Your handy tool for copying code locations with line numbers",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "f440",
   "repository": {
     "type": "git",
@@ -38,12 +38,12 @@
           "type": "array",
           "default": [
             {
-              "name": "Path with line number",
-              "format": "%p:%l"
-            },
-            {
               "name": "Relative path with line number",
               "format": "%r:%l"
+            },
+            {
+              "name": "Path with line number",
+              "format": "%p:%l"
             },
             {
               "name": "Markdown link with selection",
