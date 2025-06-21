@@ -12,6 +12,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
+## [0.0.6] - 2025-06-21
+
+### Changed
+- Removed GitHub Discussions reference from CONTRIBUTING.md
+- Simplified support channels to focus on GitHub Issues
+
 ## [0.0.5] - 2025-06-21
 
 ### Changed

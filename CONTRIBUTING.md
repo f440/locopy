@@ -176,7 +176,6 @@ Extension settings are defined in `package.json` under `contributes.configuratio
 ## Getting Help
 
 - **Issues**: Report bugs or request features in [GitHub Issues](https://github.com/f440/locopy/issues)
-- **Discussions**: Ask questions in [GitHub Discussions](https://github.com/f440/locopy/discussions)
 - **VS Code Extension API**: Refer to [VS Code Extension API](https://code.visualstudio.com/api)
 
 ## Code of Conduct
