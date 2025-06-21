@@ -12,6 +12,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
+## [0.0.7] - 2025-06-21
+
+### Fixed
+- Add .github/ to .vscodeignore to exclude CI/CD files from extension package
+- Reduce package size by excluding unnecessary GitHub Actions workflows
+
 ## [0.0.6] - 2025-06-21
 
 ### Changed
