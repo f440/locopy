@@ -7,12 +7,16 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 ## [Unreleased]
 
 ### Added
-- CONTRIBUTING.md with development setup, guidelines, and release process
-- Contributing section in README.md
 
 ### Changed
 
 ### Fixed
+
+## [0.0.2] - 2025-06-21
+
+### Added
+- CONTRIBUTING.md with development setup, guidelines, and release process
+- Contributing section in README.md
 
 ## [0.0.1] - 2025-06-21
 
