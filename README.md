@@ -104,6 +104,10 @@ Use these variables in your format templates:
 }
 ```
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, guidelines, and release process.
+
 ## Release Notes
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.

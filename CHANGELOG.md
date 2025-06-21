@@ -4,6 +4,16 @@ All notable changes to the "locopy" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [Unreleased]
+
+### Added
+- CONTRIBUTING.md with development setup, guidelines, and release process
+- Contributing section in README.md
+
+### Changed
+
+### Fixed
+
 ## [0.0.1] - 2025-06-21
 
 ### Added
