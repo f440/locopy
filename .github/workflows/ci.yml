@@ -29,5 +29,5 @@ jobs:
     - name: Compile TypeScript
       run: npm run compile
     
-    - name: Run tests
-      run: npm test
+    - name: Run pretest (lint + compile)
+      run: npm run pretest
