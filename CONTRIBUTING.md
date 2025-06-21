@@ -141,18 +141,19 @@ Extension settings are defined in `package.json` under `contributes.configuratio
    npm version major  # for breaking changes
    ```
 
-3. **Commit changes**
+3. **Commit and push changes**
    ```bash
    git add CHANGELOG.md package.json package-lock.json
    git commit -m "Prepare release v0.0.2"
+   git push origin main
    ```
 
 ### Creating a Release
 
-4. **Create draft release**
+4. **Create release**
    ```bash
    # Extract release notes from CHANGELOG.md
-   gh release create v0.0.2 --draft --notes "
+   gh release create v0.0.2 --notes "
    ### Added
    - New feature description
    
@@ -161,11 +162,9 @@ Extension settings are defined in `package.json` under `contributes.configuratio
    "
    ```
 
-5. **Review and publish**
-   - Go to [GitHub Releases](https://github.com/f440/locopy/releases)
-   - Review the draft release content
-   - Click "Publish release"
+5. **Automatic publishing**
    - GitHub Actions will automatically publish to VS Code Marketplace
+   - Monitor the Actions tab for publishing status
 
 ### Automatic Publishing
 

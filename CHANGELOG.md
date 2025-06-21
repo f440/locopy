@@ -12,6 +12,12 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ### Fixed
 
+## [0.0.3] - 2025-06-21
+
+### Changed
+- Improved CONTRIBUTING.md release process with git push step
+- Simplified release workflow by removing draft requirement
+
 ## [0.0.2] - 2025-06-21
 
 ### Added
