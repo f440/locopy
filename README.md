@@ -1,71 +1,109 @@
-# locopy README
+# Locopy
 
-This is the README for your extension "locopy". After writing up a brief description, we recommend including the following sections.
+Your handy tool for copying code locations with line numbers in VS Code.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Locopy allows you to copy file paths, line numbers, and selected text in customizable formats. Perfect for code reviews, documentation, or sharing code references.
 
-For example if there is an image subfolder under your extension project workspace:
+### Key Features
 
-\!\[feature X\]\(images/feature-x.png\)
+- **Multiple Format Support**: Configure custom copy formats with template variables
+- **Smart Line Number Detection**: Automatically handles single line, multi-line, and cursor-only selections
+- **Flexible Path Options**: Choose between absolute paths, relative paths, or just filenames
+- **Quick Access**: Two commands for different workflows - format selection or instant copy
+- **Configurable Notifications**: Toggle success messages on/off
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Commands
 
-## Requirements
+Access these commands via the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- **Locopy: Copy with Format Selection** - Choose from your configured formats
+- **Locopy: Copy Quick (First Format)** - Instantly copy using your first format
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+### `locopy.formats`
+Array of custom copy formats. Each format has:
+- `name`: Display name for the format
+- `format`: Template string with variables
 
-## Known Issues
+**Default formats:**
+```json
+[
+  {
+    "name": "Path with line number",
+    "format": "%p:%l"
+  },
+  {
+    "name": "Relative path with line number", 
+    "format": "%r:%l"
+  },
+  {
+    "name": "Markdown link with selection",
+    "format": "[%s](%r)"
+  }
+]
+```
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+### `locopy.showSuccessMessage`
+- Type: `boolean`
+- Default: `true`
+- Description: Show success message when text is copied to clipboard
+
+## Template Variables
+
+Use these variables in your format templates:
+
+- `%p` - Absolute file path
+- `%r` - Relative path from workspace root
+- `%s` - Selected text (empty if no selection)
+- `%n` - Filename only
+- `%l` - Line number(s)
+  - Single line or cursor: `42`
+  - Multi-line selection: `10-15`
+- `%%` - Escaped % character (to prevent variable expansion)
+
+## Examples
+
+### Basic Usage
+1. Place cursor on line 25 of `src/utils.ts`
+2. Run "Locopy: Copy Quick"
+3. Result: `/path/to/project/src/utils.ts:25`
+
+### Multi-line Selection
+1. Select lines 10-12 in `README.md`
+2. Choose format "Relative path with line number"
+3. Result: `README.md:10-12`
+
+### Markdown Documentation
+1. Select function name `calculateTotal`
+2. Use format `[%s](%r:%l)`
+3. Result: `[calculateTotal](src/calculator.js:42)`
+
+## Custom Format Examples
+
+```json
+{
+  "locopy.formats": [
+    {
+      "name": "GitHub URL style",
+      "format": "%r#L%l"
+    },
+    {
+      "name": "Code comment",
+      "format": "// %r:%l"
+    },
+    {
+      "name": "Escaped percentage",
+      "format": "File: %r (%%completion: %l%%)"
+    }
+  ]
+}
+```
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+See [CHANGELOG.md](CHANGELOG.md) for detailed release notes.

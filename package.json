@@ -1,8 +1,9 @@
 {
   "name": "locopy",
-  "displayName": "locopy",
+  "displayName": "Locopy",
   "description": "Your handy tool for copying code locations with line numbers",
   "version": "0.0.1",
+  "publisher": "f440",
   "engines": {
     "vscode": "^1.96.2"
   },
@@ -14,10 +15,58 @@
   "contributes": {
     "commands": [
       {
-        "command": "locopy.helloWorld",
-        "title": "Hello World"
+        "command": "locopy.copyWithFormat",
+        "title": "Copy with Format Selection",
+        "category": "Locopy"
+      },
+      {
+        "command": "locopy.copyQuick",
+        "title": "Copy Quick (First Format)",
+        "category": "Locopy"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Locopy",
+      "properties": {
+        "locopy.formats": {
+          "type": "array",
+          "default": [
+            {
+              "name": "Path with line number",
+              "format": "%p:%l"
+            },
+            {
+              "name": "Relative path with line number",
+              "format": "%r:%l"
+            },
+            {
+              "name": "Markdown link with selection",
+              "format": "[%s](%r)"
+            }
+          ],
+          "description": "Custom copy formats. Available variables: %p (absolute path), %r (relative path), %s (selected text), %n (filename), %l (line number), %% (escaped %)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Display name for the format"
+              },
+              "format": {
+                "type": "string",
+                "description": "Format template with variables"
+              }
+            },
+            "required": ["name", "format"]
+          }
+        },
+        "locopy.showSuccessMessage": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show success message when text is copied to clipboard"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
