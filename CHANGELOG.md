@@ -4,7 +4,7 @@ All notable changes to the "locopy" extension will be documented in this file.
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.1.0] - 2025-06-22
 
 ### Changed
 - **BREAKING**: Migrated from simple variable templates to Handlebars templating system
@@ -46,6 +46,8 @@ If you have custom formats in your settings, update them as follows:
 - `%s` → `{{selectedText}}`
 - `%l` → `{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}`
 - `%%` → No longer needed (use literal `%` character)
+
+## [Unreleased]
 
 ## [0.0.7] - 2025-06-21
 
