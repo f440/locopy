@@ -39,18 +39,18 @@
           "default": [
             {
               "name": "Relative path with line number",
-              "format": "%r:%l"
+              "format": "{{relativePath}}:{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}"
             },
             {
               "name": "Path with line number",
-              "format": "%p:%l"
+              "format": "{{absolutePath}}:{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}"
             },
             {
               "name": "Markdown link with selection",
-              "format": "[%s](%r)"
+              "format": "[{{#if selectedText}}{{selectedText}}{{else}}{{fileName}}{{/if}}]({{relativePath}})"
             }
           ],
-          "description": "Custom copy formats. Available variables: %p (absolute path), %r (relative path), %s (selected text), %n (filename), %l (line number), %% (escaped %)",
+          "description": "Custom copy formats using Handlebars templates. Available variables: absolutePath, relativePath, fileName, selectedText, startLine, endLine. Helper functions: replace, encodeURIComponent",
           "items": {
             "type": "object",
             "properties": {
@@ -63,7 +63,10 @@
                 "description": "Format template with variables"
               }
             },
-            "required": ["name", "format"]
+            "required": [
+              "name",
+              "format"
+            ]
           }
         },
         "locopy.showSuccessMessage": {
@@ -83,14 +86,17 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.96.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.x",
+    "@types/vscode": "^1.96.2",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
-    "eslint": "^9.25.1",
-    "typescript": "^5.8.3",
     "@vscode/test-cli": "^0.0.10",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.25.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "handlebars": "4.7.8"
   }
 }

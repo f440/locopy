@@ -93,20 +93,27 @@ Thank you for your interest in contributing to Locopy! This VS Code extension he
 - `package.json` - Extension manifest and configuration schema
 - `.github/workflows/` - CI/CD automation
 
-### Template Variable System
+### Template System
 
-The extension uses a template variable system:
-- `%p` - Absolute file path
-- `%r` - Relative path from workspace root
-- `%s` - Selected text
-- `%n` - Filename only
-- `%l` - Line number(s)
-- `%%` - Escaped % character
+The extension uses Handlebars templating for flexible format customization:
+
+**Variables:**
+- `{{absolutePath}}` - Absolute file path
+- `{{relativePath}}` - Relative path from workspace root
+- `{{fileName}}` - Filename only
+- `{{selectedText}}` - Selected text
+- `{{startLine}}` - Starting line number
+- `{{endLine}}` - Ending line number (for multi-line selections)
+
+**Helper Functions:**
+- `{{replace "pattern" "replacement" string}}` - Regular expression replacement
+- `{{encodeURIComponent string}}` - URL encoding
 
 To extend this system:
-1. Add new variables to the `formatText()` function
+1. Add new helper functions in `registerHandlebarsHelpers()` function
 2. Update configuration schema description
 3. Add examples to README.md
+4. Write tests for new functionality
 
 ### Configuration Schema
 

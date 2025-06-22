@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
+import * as Handlebars from 'handlebars';
 
 interface FormatConfig {
 	name: string;
@@ -13,10 +14,14 @@ interface EditorInfo {
 	relativePath: string;
 	fileName: string;
 	selectedText: string;
-	lineNumber: string;
+	startLine: number;
+	endLine?: number;
 }
 
 export function activate(context: vscode.ExtensionContext) {
+	// Register Handlebars helpers
+	registerHandlebarsHelpers();
+
 	const copyWithFormatCommand = vscode.commands.registerCommand('locopy.copyWithFormat', async () => {
 		await copyWithFormat();
 	});
@@ -96,14 +101,11 @@ function getEditorInfo(): EditorInfo | null {
 	const fileName = path.basename(absolutePath);
 	const selectedText = document.getText(selection);
 	
-	let lineNumber: string;
-	if (selection.isEmpty) {
-		lineNumber = (selection.start.line + 1).toString();
-	} else if (selection.start.line === selection.end.line) {
-		lineNumber = (selection.start.line + 1).toString();
-	} else {
-		const endLine = selection.end.character === 0 ? selection.end.line : selection.end.line + 1;
-		lineNumber = `${selection.start.line + 1}-${endLine}`;
+	const startLine = selection.start.line + 1;
+	let endLine: number | undefined;
+	
+	if (!selection.isEmpty && selection.start.line !== selection.end.line) {
+		endLine = selection.end.character === 0 ? selection.end.line : selection.end.line + 1;
 	}
 
 	return {
@@ -113,7 +115,8 @@ function getEditorInfo(): EditorInfo | null {
 		relativePath,
 		fileName,
 		selectedText,
-		lineNumber
+		startLine,
+		endLine
 	};
 }
 
@@ -127,15 +130,44 @@ function getShowSuccessMessage(): boolean {
 	return config.get<boolean>('showSuccessMessage', true);
 }
 
+function registerHandlebarsHelpers(): void {
+	// Register replace helper: {{replace "pattern" "replacement" string}}
+	Handlebars.registerHelper('replace', function(pattern: string, replacement: string, str: string) {
+		if (typeof str !== 'string') {
+			return str;
+		}
+		try {
+			const regex = new RegExp(pattern, 'g');
+			return str.replace(regex, replacement);
+		} catch (e) {
+			return str;
+		}
+	});
+
+	// Register encodeURIComponent helper: {{encodeURIComponent string}}
+	Handlebars.registerHelper('encodeURIComponent', function(str: string) {
+		if (typeof str !== 'string') {
+			return str;
+		}
+		return encodeURIComponent(str);
+	});
+}
+
 function formatText(template: string, info: EditorInfo): string {
-	return template
-		.replace(/%%/g, '\x00PERCENT\x00')
-		.replace(/%p/g, info.absolutePath)
-		.replace(/%r/g, info.relativePath)
-		.replace(/%s/g, info.selectedText)
-		.replace(/%n/g, info.fileName)
-		.replace(/%l/g, info.lineNumber)
-		.replace(/\x00PERCENT\x00/g, '%');
+	try {
+		const compiledTemplate = Handlebars.compile(template);
+		return compiledTemplate({
+			absolutePath: info.absolutePath,
+			relativePath: info.relativePath,
+			fileName: info.fileName,
+			selectedText: info.selectedText,
+			startLine: info.startLine,
+			endLine: info.endLine
+		});
+	} catch (error) {
+		vscode.window.showErrorMessage(`Template error: ${error}`);
+		return template;
+	}
 }
 
 async function copyToClipboard(text: string): Promise<void> {

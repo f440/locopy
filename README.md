@@ -8,9 +8,10 @@ Locopy allows you to copy file paths, line numbers, and selected text in customi
 
 ### Key Features
 
-- **Multiple Format Support**: Configure custom copy formats with template variables
+- **Handlebars Template Support**: Configure custom copy formats using powerful Handlebars templating
 - **Smart Line Number Detection**: Automatically handles single line, multi-line, and cursor-only selections
 - **Flexible Path Options**: Choose between absolute paths, relative paths, or just filenames
+- **Helper Functions**: Built-in helpers for text manipulation and encoding
 - **Quick Access**: Two commands for different workflows - format selection or instant copy
 - **Configurable Notifications**: Toggle success messages on/off
 
@@ -26,24 +27,24 @@ Access these commands via the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 This extension contributes the following settings:
 
 ### `locopy.formats`
-Array of custom copy formats. Each format has:
+Array of custom copy formats using Handlebars templates. Each format has:
 - `name`: Display name for the format
-- `format`: Template string with variables
+- `format`: Handlebars template string
 
 **Default formats:**
 ```json
 [
   {
-    "name": "Path with line number",
-    "format": "%p:%l"
+    "name": "Relative path with line number",
+    "format": "{{relativePath}}:{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}"
   },
   {
-    "name": "Relative path with line number", 
-    "format": "%r:%l"
+    "name": "Path with line number",
+    "format": "{{absolutePath}}:{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}"
   },
   {
     "name": "Markdown link with selection",
-    "format": "[%s](%r)"
+    "format": "[{{#if selectedText}}{{selectedText}}{{else}}{{fileName}}{{/if}}]({{relativePath}})"
   }
 ]
 ```
@@ -55,23 +56,37 @@ Array of custom copy formats. Each format has:
 
 ## Template Variables
 
-Use these variables in your format templates:
+Use these variables in your Handlebars templates:
 
-- `%p` - Absolute file path
-- `%r` - Relative path from workspace root
-- `%s` - Selected text (empty if no selection)
-- `%n` - Filename only
-- `%l` - Line number(s)
-  - Single line or cursor: `42`
-  - Multi-line selection: `10-15`
-- `%%` - Escaped % character (to prevent variable expansion)
+- `{{absolutePath}}` - Absolute file path
+- `{{relativePath}}` - Relative path from workspace root
+- `{{fileName}}` - Filename only
+- `{{selectedText}}` - Selected text (empty if no selection)
+- `{{startLine}}` - Starting line number (1-based)
+- `{{endLine}}` - Ending line number for multi-line selections (undefined for single line)
+
+## Helper Functions
+
+Locopy provides built-in Handlebars helper functions:
+
+### `replace`
+Replace text using regular expressions:
+```handlebars
+{{replace "pattern" "replacement" string}}
+```
+
+### `encodeURIComponent`  
+URL-encode text:
+```handlebars
+{{encodeURIComponent string}}
+```
 
 ## Examples
 
 ### Basic Usage
 1. Place cursor on line 25 of `src/utils.ts`
 2. Run "Locopy: Copy Quick"
-3. Result: `/path/to/project/src/utils.ts:25`
+3. Result: `src/utils.ts:25`
 
 ### Multi-line Selection
 1. Select lines 10-12 in `README.md`
@@ -80,7 +95,7 @@ Use these variables in your format templates:
 
 ### Markdown Documentation
 1. Select function name `calculateTotal`
-2. Use format `[%s](%r:%l)`
+2. Use template `[{{selectedText}}]({{relativePath}}:{{startLine}})`
 3. Result: `[calculateTotal](src/calculator.js:42)`
 
 ## Custom Format Examples
@@ -89,16 +104,24 @@ Use these variables in your format templates:
 {
   "locopy.formats": [
     {
-      "name": "GitHub URL style",
-      "format": "%r#L%l"
+      "name": "GitHub URL style", 
+      "format": "{{relativePath}}#L{{startLine}}{{#if endLine}}-L{{endLine}}{{/if}}"
     },
     {
       "name": "Code comment",
-      "format": "// %r:%l"
+      "format": "// {{relativePath}}:{{startLine}}"
     },
     {
-      "name": "Escaped percentage",
-      "format": "File: %r (%%completion: %l%%)"
+      "name": "URL-safe path",
+      "format": "{{encodeURIComponent relativePath}}:{{startLine}}"
+    },
+    {
+      "name": "Clean filename",
+      "format": "{{replace \"[^a-zA-Z0-9_]\" \"_\" fileName}}:{{startLine}}"
+    },
+    {
+      "name": "Conditional selection display",
+      "format": "{{relativePath}}:{{startLine}}{{#if selectedText}} - {{selectedText}}{{/if}}"
     }
   ]
 }

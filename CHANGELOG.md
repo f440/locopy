@@ -6,11 +6,46 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
-### Added
-
 ### Changed
+- **BREAKING**: Migrated from simple variable templates to Handlebars templating system
+- Template syntax changed from `%variable` to `{{variable}}` format
+- Line numbers now provided as separate `startLine` and `endLine` variables instead of combined `lineNumber`
+- Updated default format templates to use new Handlebars syntax
+- Enhanced template system with conditional logic and helper functions
 
-### Fixed
+### Added
+- Handlebars templating engine for powerful format customization
+- Helper functions: `replace` for regex replacement, `encodeURIComponent` for URL encoding
+- Conditional template logic support (e.g., `{{#if endLine}}`)
+- Comprehensive test suite for template functionality
+- Improved error handling for malformed templates
+
+### Migration Guide
+If you have custom formats in your settings, update them as follows:
+
+**Old format (no longer supported):**
+```json
+{
+  "name": "Path with line",
+  "format": "%r:%l"
+}
+```
+
+**New format:**
+```json
+{
+  "name": "Path with line",
+  "format": "{{relativePath}}:{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}"
+}
+```
+
+**Variable mapping:**
+- `%p` → `{{absolutePath}}`
+- `%r` → `{{relativePath}}`
+- `%n` → `{{fileName}}`
+- `%s` → `{{selectedText}}`
+- `%l` → `{{startLine}}{{#if endLine}}-{{endLine}}{{/if}}`
+- `%%` → No longer needed (use literal `%` character)
 
 ## [0.0.7] - 2025-06-21
 
